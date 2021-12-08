@@ -111,6 +111,7 @@ local function nHud()
     surface.SetMaterial(heart_icon)
     surface.DrawTexturedRect(x * .01, y * .96, y * .03, y * .03)
     draw.SimpleText(health, 'nHudFont', x * .01 + icon_o + otstup, y * .96, color_white, 0, 0)
+
     -- Броня
     local armor_o = icon_o + otstup + surface.GetTextSize(health)
 
