@@ -40,10 +40,21 @@ surface.CreateFont('nHudFontAmmo', {
     extended = true,
 })
 
+local warning_icon = Material('darkhub_ui/handbrake.png')
+local logo_icon = Material('darkhub/logo.png')
+local heart_icon = Material('darkhub_ui/heart.png')
+local armor_icon = Material('darkhub_ui/vest.png')
+local hunger_icon = Material('darkhub_ui/food.png')
+local money_icon = Material('darkhub_ui/money.png')
+local job_icon = Material('darkhub_ui/build.png')
+local license_icon = Material('darkhub_ui/pistol.png')
+local user_icon = Material('darkhub_ui/user.png')
+
 local function nHud()
     local x, y = ScrW(), ScrH()
     local ply = LocalPlayer()
-    local health = ply:Health()
+    -- local health = ply:Health()
+    local health = math.Clamp( ply:Health(), 0, ply:GetMaxHealth())
     local armor = ply:Armor()
     local hunger = math.Round(ply:getDarkRPVar('Energy') or 0)
     local money = ply:getDarkRPVar('money')
@@ -58,11 +69,12 @@ local function nHud()
     local otstup = y * .005
     local otstup_a
     local icon_o = y * .025
+
     surface.SetFont('nHudFont')
 
     -- Комендантский час
     if GetGlobalBool('DarkRP_LockDown') then
-        surface.SetMaterial(Material('darkhub_ui/handbrake.png'))
+        surface.SetMaterial(warning_icon)
         surface.SetDrawColor(255, 0, 0)
         surface.DrawTexturedRect(x * .56, y * -.002, x * .02, x * .02)
         surface.SetDrawColor(0, 0, 255)
@@ -73,7 +85,7 @@ local function nHud()
 
     -- Розыск
     if wanted then
-        surface.SetMaterial(Material('darkhub_ui/handbrake.png'))
+        surface.SetMaterial(warning_icon)
         surface.SetDrawColor(255, 0, 0)
         surface.DrawTexturedRect(x * .54, y * .055, x * .02, x * .02)
         surface.SetDrawColor(0, 0, 255)
@@ -90,30 +102,22 @@ local function nHud()
 
     -- Время + Логотип + Название сервера
     surface.SetDrawColor(255, 255, 255)
-    surface.SetMaterial(Material('darkhub/logo.png'))
+    surface.SetMaterial(logo_icon)
     surface.DrawTexturedRectRotated(x * 0.015, y * 0.025, y * .04, y * .04, math.sin(RealTime() * 1) * 300)
     draw.SimpleText(os.date('%H:%M:%S'), 'nHudFontBig', x * 0.03, y * 0.017, color_white, 0, 3)
     draw.SimpleText('DarkHub #2', 'nHudFontBig', x * 0.03, y * 0, color_white, 0, 3)
+
     -- Здоровье
     surface.SetDrawColor(255, 0, 0)
-    surface.SetMaterial(Material('darkhub_ui/heart.png'))
+    surface.SetMaterial(heart_icon)
     surface.DrawTexturedRect(x * .01, y * .96, y * .03, y * .03)
-    local health_text
-
-    if health >= 0 then
-        draw.SimpleText(health, 'nHudFont', x * .01 + icon_o + otstup, y * .96, color_white, 0, 0)
-        health_text = health
-    else
-        draw.SimpleText('0', 'nHudFont', x * .01 + icon_o + otstup, y * .96, color_white, 0, 0)
-        health_text = '0'
-    end
-
+    draw.SimpleText(health, 'nHudFont', x * .01 + icon_o + otstup, y * .96, color_white, 0, 0)
     -- Броня
-    local armor_o = icon_o + otstup + surface.GetTextSize(health_text)
+    local armor_o = icon_o + otstup + surface.GetTextSize(health)
 
     if armor > 0 then
         surface.SetDrawColor(0, 0, 255)
-        surface.SetMaterial(Material('darkhub_ui/vest.png'))
+        surface.SetMaterial(armor_icon)
         surface.DrawTexturedRect(x * .01 + armor_o, y * .96, y * .03, y * .03)
         draw.SimpleText(armor, 'nHudFont', x * .01 + armor_o + icon_o + otstup, y * .96, color_white, 0, 0)
         otstup_a = icon_o + otstup + surface.GetTextSize(armor)
@@ -122,23 +126,23 @@ local function nHud()
     end
 
     -- Голод
-    local hunger_o = icon_o + surface.GetTextSize(health_text) + otstup + otstup_a
+    local hunger_o = icon_o + surface.GetTextSize(health) + otstup + otstup_a
     surface.SetDrawColor(255, 90, 0)
-    surface.SetMaterial(Material('darkhub_ui/food.png'))
+    surface.SetMaterial(hunger_icon)
     surface.DrawTexturedRect(x * .01 + hunger_o, y * .96, y * .03, y * .03)
     draw.SimpleText(hunger, 'nHudFont', x * .01 + hunger_o + icon_o + otstup, y * .96, color_white, 0, 0)
     -- Деньги + Зарплата
     -- CBLib.Helper.CommaFormatNumber(BATM.GetPersonalAccount().balance)
     local money_o = icon_o + hunger_o + surface.GetTextSize(hunger) + otstup * 1.5
     surface.SetDrawColor(30, 200, 0)
-    surface.SetMaterial(Material('darkhub_ui/money.png'))
+    surface.SetMaterial(money_icon)
     surface.DrawTexturedRect(x * .01 + money_o, y * .96, y * .03, y * .03)
     draw.SimpleText('Деньги:', 'nHudFont', x * .01 + money_o + icon_o + otstup, y * .96, Color(255, 255, 255, 255), 0)
     draw.SimpleText(DarkRP.formatMoney(money) .. ' + ' .. DarkRP.formatMoney(salary), 'nHudFont', x * .01 + money_o + icon_o + otstup + surface.GetTextSize('Деньги:') + otstup, y * .96, Color(30, 200, 0, 255), 0)
     -- Работа
     local job_o = money_o + icon_o + otstup * 3 + surface.GetTextSize('Деньги:' .. DarkRP.formatMoney(money) .. ' + ' .. DarkRP.formatMoney(salary))
     surface.SetDrawColor(team.GetColor(ply:Team()))
-    surface.SetMaterial(Material('darkhub_ui/build.png'))
+    surface.SetMaterial(job_icon)
     surface.DrawTexturedRect(x * .01 + job_o, y * .96, y * .03, y * .03)
     draw.SimpleText('Профессия:', 'nHudFont', x * .01 + job_o + icon_o + otstup, y * .96, Color(255, 255, 255, 255), 0)
     draw.SimpleText(job, 'nHudFont', x * .01 + job_o + icon_o + otstup + surface.GetTextSize('Профессия:') + otstup, y * .96, team.GetColor(ply:Team()), 0)
@@ -147,7 +151,7 @@ local function nHud()
 
     if licenze == true then
         surface.SetDrawColor(0, 100, 255)
-        surface.SetMaterial(Material('darkhub_ui/pistol.png'))
+        surface.SetMaterial(license_icon)
         surface.DrawTexturedRect(x * .01 + lic_o, y * .96, y * .03, y * .03)
         -- draw.SimpleText('Лицензия', 'nHudFont', x*.13 + lic_o, y*.54, Color( 0, 255, 0, 255 ), 0)
     end
@@ -220,10 +224,9 @@ local function NicknameOverHead(ply)
             name = ply:GetName()
         end
 
-        surface.SetMaterial(Material('darkhub_ui/user.png'))
+        surface.SetMaterial(user_icon)
         surface.SetDrawColor(color_white)
         surface.DrawTexturedRect(x - 50 - surface.GetTextSize(name) / 2, y, 100, 100)
-        surface.SetMaterial(Material('darkhub_ui/user.png'))
         draw.SimpleText(name, 'nHudHeadName', x + 50, y, color_white, 1, 3)
         draw.SimpleText(job, 'nHudHeadNameJob', x, y + 100, team.GetColor(ply:Team()), 1, 3)
 
