@@ -1,4 +1,23 @@
 --[[ ------ Scoreboard ------ ]]
+NUI.Workshop = false
+
+NUI.Scoreboard.groups = {
+    ['superadmin'] = {
+        name = 'Команда проекта',
+        color = Color(255, 0, 0, 255),
+        icon = 'icon16/tux.png'
+    },
+    ['user'] = {
+        name = 'Игрок',
+        color = Color(255, 255, 255),
+        icon = 'icon16/user.png'
+    },
+    ['admin'] = {
+        name = 'Администратор',
+        color = Color(53, 50, 255),
+        icon = 'icon16/user.png'
+    },
+}
 --[[ ---------- F4 ---------- ]]
 -- Добавление ссылок в F4
 NUI.F4.Links = {

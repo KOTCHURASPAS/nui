@@ -25,23 +25,7 @@ surface.CreateFont('nScoreboardFontButs', {
     extended = true,
 })
 
-local ugn = {
-    ['superadmin'] = {
-        name = 'Команда проекта',
-        color = Color(255, 0, 0, 255),
-        icon = 'icon16/tux.png'
-    },
-    ['user'] = {
-        name = 'Игрок',
-        color = Color(255, 255, 255),
-        icon = 'icon16/user.png'
-    },
-    ['admin'] = {
-        name = 'Администратор',
-        color = Color(53, 50, 255),
-        icon = 'icon16/user.png'
-    },
-}
+
 local function st()
     surface.PlaySound('buttons/button15.wav')
 end
@@ -183,9 +167,9 @@ local function ToggleScoreboard(toggle)
 
                 ShadowedText(v:getDarkRPVar('job'), 'nScoreboardFontSmall', w * .5, ytextpos, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                 surface.SetDrawColor(color_white)
-                surface.SetMaterial(Material(ugn[v:GetUserGroup()].icon))
-                surface.DrawTexturedRect(w * .97 - surface.GetTextSize(ugn[v:GetUserGroup()].name), iconypos, icons, icons)
-                ShadowedText(ugn[v:GetUserGroup()].name or 'Неизвестно', 'nScoreboardFontSmall', w - 10, ytextpos, ugn[v:GetUserGroup()].color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                surface.SetMaterial(Material(NUI.Scoreboard.groups[v:GetUserGroup()].icon))
+                surface.DrawTexturedRect(w * .97 - surface.GetTextSize(NUI.Scoreboard.groups[v:GetUserGroup()].name), iconypos, icons, icons)
+                ShadowedText(NUI.Scoreboard.groups[v:GetUserGroup()].name or 'Неизвестно', 'nScoreboardFontSmall', w - 10, ytextpos, NUI.Scoreboard.groups[v:GetUserGroup()].color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
             end
 
             avatar = vgui.Create('CircleAvatarImage', playerbuts)
