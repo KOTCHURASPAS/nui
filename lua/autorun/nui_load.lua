@@ -6,7 +6,6 @@ end
 
 local nuifiles = {
     {rep = 'nui/modules/f4.lua'},
-    {rep = 'nui/modules/hud.lua'},
     {rep = 'nui/modules/scoreboard.lua'},
     {rep = 'nui/config.lua'},
 }
