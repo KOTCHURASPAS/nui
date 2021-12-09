@@ -26,12 +26,42 @@ surface.CreateFont('nScoreboardFontButs', {
 })
 
 
-local function st()
-    surface.PlaySound('buttons/button15.wav')
+
+function PlayedTime(time)
+    local t = {}
+    local w = math.floor(time / (86400 * 7))
+
+    if (w > 0) then
+        table.insert(t, w .. 'н')
+        time = time - w * (86400 * 7)
+    end
+
+    local d = math.floor(time / 86400)
+
+    if (d > 0) then
+        table.insert(t, d .. 'д')
+        time = time - d * 86400
+    end
+
+    local h = math.floor(time / 3600)
+
+    if (h > 0) then
+        table.insert(t, h .. 'ч')
+        time = time - h * 3600
+    end
+
+    local m = math.floor(time / 60)
+
+    if (m > 0) then
+        table.insert(t, m .. 'м')
+        time = time - m * 60
+    end
+
+    return table.concat(t, ' ')
 end
 
-local function sh()
-    LocalPlayer():EmitSound('buttons/blip1.wav', 35)
+local function st()
+    LocalPlayer():EmitSound('buttons/button15.wav', 25)
 end
 
 local function ToggleScoreboard(toggle)
@@ -43,7 +73,7 @@ local function ToggleScoreboard(toggle)
         playersfr:MakePopup()
 
         playersfr.Paint = function(self, w, h)
-            draw.RoundedBox(ScreenScale(3), 0, 0, w, h, Color(80, 80, 80))
+            draw.RoundedBox(3, 0, 0, w, h, Color(80, 80, 80))
         end
 
         local headfr = vgui.Create('EditablePanel', playersfr)
@@ -51,7 +81,7 @@ local function ToggleScoreboard(toggle)
         headfr:SetPos(0, 0)
 
         headfr.Paint = function(self, w, h)
-            draw.RoundedBoxEx(ScreenScale(3), 0, 0, w, h * .5, Color(50, 50, 50), true, true)
+            draw.RoundedBoxEx(3, 0, 0, w, h * .5, Color(50, 50, 50), true, true)
             draw.RoundedBox(0, 0, h * .48, w, h * .035, color_white)
             ShadowedText(GetHostName(), 'nScoreboardFontSmall', 10, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             ShadowedText('Приятной игры!', 'nScoreboardFontSmall', w * .5, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -63,16 +93,18 @@ local function ToggleScoreboard(toggle)
         headtitles:SetPos(10, 0 + headfr:GetTall() / 2 + 7)
 
         headtitles.Paint = function(s, w, h)
-            draw.RoundedBox(ScreenScale(3), 0, 0, w, h, Color(50, 50, 50))
+            draw.RoundedBox(3, 0, 0, w, h, Color(50, 50, 50))
             ShadowedText('Имя', 'nScoreboardFontSmall', 10, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-            ShadowedText('Профессия', 'nScoreboardFontSmall', w * .5, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            ShadowedText('Профессия', 'nScoreboardFontSmall', w * .4, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            ShadowedText('Сыграно', 'nScoreboardFontSmall', w * .7, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
             ShadowedText('Привилегия', 'nScoreboardFontSmall', w - 10, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         end
 
         local scroller = vgui.Create('DScrollPanel', playersfr)
         scroller:SetSize(playersfr:GetWide(), playersfr:GetTall() - headfr:GetTall() / 2 - 60)
         scroller:SetPos(0, 0 + headfr:GetTall() / 2 + 10 + headtitles:GetTall())
-        -- scroller.VBar:SetWide(30)
+        scroller:DockPadding(5,5,5,5)
+        scroller.VBar:SetWide(playersfr:GetWide() * .01)
         local scrollerp = scroller:GetVBar()
 
         function scrollerp:Paint()
@@ -95,54 +127,14 @@ local function ToggleScoreboard(toggle)
         table.sort(players, function(a, b) return a:Team() > b:Team() end)
 
         for k, v in pairs(players) do
-            local cmdbutst = {
-                ['1'] = {
-                    typ = 'command',
-                    admin = true,
-                    name = 'ТП к',
-                    cmd = 'sam goto ' .. v:Name(),
-                },
-                ['2'] = {
-                    typ = 'command',
-                    admin = true,
-                    name = 'ТП к себе',
-                    cmd = 'sam bring ' .. v:Name(),
-                },
-                ['3'] = {
-                    typ = 'command',
-                    admin = true,
-                    name = 'Вернуть игрока',
-                    cmd = 'sam return ' .. v:Name(),
-                },
-                ['4'] = {
-                    typ = 'copy',
-                    admin = false,
-                    name = 'SteamID ' .. v:SteamID(),
-                    text = v:SteamID(),
-                },
-                ['5'] = {
-                    typ = 'copy',
-                    admin = false,
-                    name = 'Ник: ' .. v:Name(),
-                    text = v:Name(),
-                },
-                ['6'] = {
-                    typ = 'arg',
-                    admin = true,
-                    name = 'Кикнуть',
-                    cmd = 'sam kick ' .. v:Name() .. ' ',
-                },
-            }
-
             local playerbuts = vgui.Create('DButton', playersfr)
             playerbuts:SetTall(playersfr:GetTall() * .05)
             playerbuts:SetText('')
-            playerbuts:DockMargin(10, 2, 3, 2)
+            playerbuts:DockMargin(10,5,10,0)
             playerbuts:Dock(TOP)
             local a = 200
 
             playerbuts.OnCursorEntered = function()
-                sh()
                 a = 150
             end
 
@@ -156,8 +148,8 @@ local function ToggleScoreboard(toggle)
             local iconypos = playerbuts:GetTall() * .25
 
             playerbuts.Paint = function(s, w, h)
-                draw.RoundedBox(ScreenScale(3), 0, 0, w, h, team.GetColor(v:Team()))
-                draw.RoundedBox(ScreenScale(3), 0, 0, w, h, Color(0, 0, 0, a))
+                draw.RoundedBox(3, 0, 0, w, h, team.GetColor(v:Team()))
+                draw.RoundedBox(3, 0, 0, w, h, Color(0, 0, 0, a))
 
                 if v:GetNWString('orgName') ~= '' then
                     ShadowedText(v:Name() .. ' (' .. v:GetNWString('orgName') .. ')', 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
@@ -165,7 +157,8 @@ local function ToggleScoreboard(toggle)
                     ShadowedText(v:Name(), 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                 end
 
-                ShadowedText(v:getDarkRPVar('job'), 'nScoreboardFontSmall', w * .5, ytextpos, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                ShadowedText(v:getDarkRPVar('job'), 'nScoreboardFontSmall', w * .4, ytextpos, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                ShadowedText(PlayedTime(v:GetUTime() + CurTime() - v:GetUTimeStart()), 'nScoreboardFontSmall', w * .7, ytextpos, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                 surface.SetDrawColor(color_white)
                 surface.SetMaterial(Material(NUI.Scoreboard.groups[v:GetUserGroup()].icon))
                 surface.DrawTexturedRect(w * .97 - surface.GetTextSize(NUI.Scoreboard.groups[v:GetUserGroup()].name), iconypos, icons, icons)
@@ -200,19 +193,57 @@ local function ToggleScoreboard(toggle)
                         butslist:Dock(FILL)
                         butslist:SetSpaceY(5)
                         butslist:SetSpaceX(5)
-                        print(butslist:GetTall())
 
-                        surface.SetFont('nScoreboardFontButs')
-                        for c in pairs(cmdbutst) do
+                        NUI.Scoreboard.cmd = {
+                            [1] = {
+                                typ = 'command',
+                                admin = true,
+                                name = 'ТП к',
+                                cmd = 'sam goto ' .. v:Name(),
+                            },
+                            [2] = {
+                                typ = 'command',
+                                admin = true,
+                                name = 'ТП к себе',
+                                cmd = 'sam bring ' .. v:Name(),
+                            },
+                            [3] = {
+                                typ = 'command',
+                                admin = true,
+                                name = 'Вернуть игрока',
+                                cmd = 'sam return ' .. v:Name(),
+                            },
+                            [4] = {
+                                typ = 'copy',
+                                admin = false,
+                                name = 'SteamID ' .. v:SteamID(),
+                                text = v:SteamID(),
+                            },
+                            [5] = {
+                                typ = 'copy',
+                                admin = false,
+                                name = 'Ник: ' .. v:Name(),
+                                text = v:Name(),
+                            },
+                            [6] = {
+                                typ = 'arg',
+                                admin = true,
+                                name = 'Кикнуть',
+                                cmd = 'sam kick ' .. v:Name() .. ' ',
+                            },
+                        }
+
+                        for c in pairs(NUI.Scoreboard.cmd) do
+                            
+                            surface.SetFont('nScoreboardFontButs')
                             cmdbut = vgui.Create('DButton', butslist)
-                            cmdbut:SetSize(10 + surface.GetTextSize(cmdbutst[c].name), butsscroll:GetTall())
+                            cmdbut:SetSize(10 + surface.GetTextSize(NUI.Scoreboard.cmd[c].name), butsscroll:GetTall())
                             cmdbut:SetText('')
                             butslist:Add(cmdbut)
                             local texta = 255
 
                             cmdbut.OnCursorEntered = function()
                                 texta = 200
-                                sh()
                             end
 
                             cmdbut.OnCursorExited = function()
@@ -221,19 +252,19 @@ local function ToggleScoreboard(toggle)
 
                             cmdbut.Paint = function(s, w, h)
                                 draw.RoundedBox(h * .2, 0, 0, w, h, Color(50, 50, 50, texta))
-                                ShadowedText(cmdbutst[c].name, 'nScoreboardFontButs', w * .5, h * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                ShadowedText(NUI.Scoreboard.cmd[c].name, 'nScoreboardFontButs', w * .5, h * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                             end
 
                             cmdbut.DoClick = function()
-                                if cmdbutst[c].typ == 'copy' then
-                                    SetClipboardText(cmdbutst[c].text)
-                                    notification.AddLegacy('Успешно скопрированно: ' .. cmdbutst[c].text, NOTIFY_HINT, 2)
-                                elseif cmdbutst[c].typ == 'command' then
-                                    ply:ConCommand(cmdbutst[c].cmd)
-                                elseif cmdbutst[c].typ == 'arg' then
+                                if NUI.Scoreboard.cmd[c].typ == 'copy' then
+                                    SetClipboardText(NUI.Scoreboard.cmd[c].text)
+                                    notification.AddLegacy('Успешно скопрированно: ' .. NUI.Scoreboard.cmd[c].text, NOTIFY_HINT, 2)
+                                elseif NUI.Scoreboard.cmd[c].typ == 'command' then
+                                    ply:ConCommand(NUI.Scoreboard.cmd[c].cmd)
+                                elseif NUI.Scoreboard.cmd[c].typ == 'arg' then
                                     Derma_StringRequest('Введите причину', 'Введите причину', '', function(arg)
                                         if arg ~= '' then
-                                            ply:ConCommand(cmdbutst[c].cmd .. arg)
+                                            ply:ConCommand(NUI.Scoreboard.cmd[c].cmd .. arg)
                                         else
                                             notification.AddLegacy('Вы не указали причину', NOTIFY_ERROR, 2)
                                         end

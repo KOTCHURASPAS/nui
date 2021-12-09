@@ -12,8 +12,8 @@ surface.CreateFont('nF4Font', {
     extended = true,
 })
 
-local closebuticon = Material('nui/delete.png', 'noclamp smooth')
-local modelselecticon = Material('nui/user.png', 'noclamp smooth')
+local closebuticon = Material('darkhub_ui/delete.png', 'smooth 1')
+local modelselecticon = Material('darkhub_ui/user.png', 'smooth 1')
 
 local function ScrollPaint(svar, p, c)
     local svar = p:GetVBar()
@@ -263,10 +263,8 @@ local function nF4Menu()
                         bb:SetDisabled(false)
                     end
 
-                    local ms = lol
-
                     bb.DoClick = function()
-                        if (istable(job.model) and #job.model > 1) and not ms:IsValid() then
+                        if (istable(job.model) and #job.model > 1) then
                             local ms = vgui.Create('EditablePanel', fr)
                             ms:SetSize(fr:GetWide() * .4, fr:GetTall() * .6)
                             ms:Center()
@@ -344,7 +342,7 @@ local function nF4Menu()
                                 end
 
                                 mli.DoClick = function()
-                                    DarkRP.setPreferredJobModel(job.team, v)
+                                    DarkRP.setPreferredJobModel(jv.team, jmv)
                                 end
                             end
 
@@ -419,78 +417,276 @@ local function nF4Menu()
         sc:SetSize(pnlfr:GetWide() - ci:GetWide(), pnlfr:GetTall() - h:GetTall() - 15)
         sc.VBar:SetWide(sc:GetWide() * .02)
         ScrollPaint(entitiesscroll, sc, 50)
+        local cat -- Мур
 
         for eck, ecv in pairs(DarkRP.getCategories().entities) do
-            local cat = vgui.Create('DCollapsibleCategory', sc)
-            cat:SetExpanded(true)
-            cat:Dock(TOP)
-            cat:DockMargin(10, 2, 5, 2)
-            cat:SetLabel('')
-            cat:DockPadding(0, 0, 0, 5)
-            cat.Header:SetTall(pnlfr:GetTall() * .05)
+            local ei
+            local iic = 0
 
-            cat.Paint = function(s, w, h)
-                draw.RoundedBox(round, 0, 0, w, h, Color(50, 50, 50))
-                draw.SimpleText(ecv.name, 'nF4FontHead', w * .03, 5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+            for emkc, emvc in pairs(ecv.members) do
+                if emvc.allowed ~= nil then
+                    for ak, av in pairs(emvc.allowed) do
+                        if LocalPlayer():Team() == av then
+                            iic = iic + 1
+                        end
+                    end
+                end
             end
 
-            local ei
+            if iic > 0 then
+                cat = vgui.Create('DCollapsibleCategory', sc)
+                cat:SetExpanded(true)
+                cat:Dock(TOP)
+                cat:DockMargin(10, 2, 5, 2)
+                cat:SetLabel('')
+                cat:DockPadding(0, 0, 0, 5)
+                cat.Header:SetTall(pnlfr:GetTall() * .05)
+
+                cat.Paint = function(s, w, h)
+                    draw.RoundedBox(round, 0, 0, w, h, Color(50, 50, 50))
+                    draw.SimpleText(ecv.name, 'nF4FontHead', w * .03, 5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                end
+            end
 
             for emk, emv in pairs(ecv.members) do
-                local i = cat:Add('DButton')
-                i:SetTall(pnlfr:GetTall() * .1)
-                i:SetText('')
-                i:Dock(TOP)
-                i:DockMargin(5, 5, 5, 0)
-                PrintTable(emv)
+                if emv.allowed ~= nil then
+                    for ak, av in pairs(emv.allowed) do
+                        if av == LocalPlayer():Team() then
+                            local i = cat:Add('DButton')
+                            i:SetTall(pnlfr:GetTall() * .1)
+                            i:SetText('')
+                            i:Dock(TOP)
+                            i:DockMargin(5, 5, 5, 0)
+                            ei = vgui.Create('EditablePanel', ci)
+                            ei:SetSize(ci:GetWide(), ci:GetTall())
+                            ei:SetPos(0, 0)
+
+                            i.Paint = function(s, w, h)
+                                if s:IsHovered() then
+                                    draw.RoundedBox(round, 0, 0, w, h, Color(90, 90, 90))
+                                else
+                                    draw.RoundedBox(round, 0, 0, w, h, Color(80, 80, 80))
+                                end
+
+                                draw.SimpleText(emv.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                draw.SimpleText(DarkRP.formatMoney(emv.price), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                draw.SimpleText('Максимум: ' .. emv.max, 'nF4Font', h, h * .7, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                            end
+
+                            local icon = vgui.Create('ModelImage', i)
+                            icon:SetModel(emv.model)
+                            icon:SetPos(5, 5)
+                            icon:SetSize(i:GetTall() - 10, i:GetTall() - 10)
+
+                            icon.Paint = function(s, w, h)
+                                draw.RoundedBox(round, 0, 0, w, h, Color(0, 0, 0, 200))
+                            end
+
+                            i.DoClick = function()
+                                LocalPlayer():EmitSound('buttons/button15.wav', 25)
+                                ei:Remove()
+                                ei = vgui.Create('EditablePanel', ci)
+                                ei:SetSize(ci:GetWide(), ci:GetTall())
+                                ei:SetPos(0, 0)
+
+                                ei.Paint = function(s, w, h)
+                                    draw.SimpleText(emv.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                    draw.SimpleText('Цена: ' .. DarkRP.formatMoney(emv.price), 'nF4FontHead', w * .1, h * .4, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                    draw.SimpleText('Максимум: ' .. emv.max, 'nF4FontHead', w * .1, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                end
+
+                                local bb = vgui.Create('nF4Button', ei)
+                                bb:SetSize(ei:GetWide() * .8, ei:GetTall() * .05)
+                                bb:SetPos(ei:GetWide() * .1, ei:GetTall() * .9)
+                                bb:SetText('Купить')
+
+                                bb.DoClick = function()
+                                    RunConsoleCommand('darkrp', emv.cmd)
+                                end
+
+                                local m = vgui.Create('DModelPanel', ei)
+                                m:SetSize(ei:GetWide(), ei:GetWide())
+                                m:SetPos(0, -ei:GetTall() * .1)
+                                m:SetModel(emv.model)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    local function foodpanel()
+        pnlfrf(NUI.F4.Pages.food.icon, NUI.F4.Pages.food.name)
+        local sc = vgui.Create('DScrollPanel', pnlfr)
+        sc:SetPos(-5, 10 + h:GetTall())
+        sc:SetSize(pnlfr:GetWide() - ci:GetWide(), pnlfr:GetTall() - h:GetTall() - 15)
+        sc.VBar:SetWide(sc:GetWide() * .02)
+        ScrollPaint(foodscroll, sc, 50)
+        local ei
+
+        for eck, ecv in pairs(DarkRP.getFoodItems()) do
+            local i = vgui.Create('DButton', sc)
+            i:SetTall(pnlfr:GetTall() * .1)
+            i:SetText('')
+            i:Dock(TOP)
+            i:DockMargin(10, 5, 5, 0)
+            ei = vgui.Create('EditablePanel', ci)
+            ei:SetSize(ci:GetWide(), ci:GetTall())
+            ei:SetPos(0, 0)
+
+            i.Paint = function(s, w, h)
+                if s:IsHovered() then
+                    draw.RoundedBox(round, 0, 0, w, h, Color(60, 60, 60))
+                else
+                    draw.RoundedBox(round, 0, 0, w, h, Color(50, 50, 50))
+                end
+
+                draw.SimpleText(ecv.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                draw.SimpleText(DarkRP.formatMoney(ecv.price), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                draw.SimpleText('Энергия: ' .. ecv.energy .. '%', 'nF4Font', h, h * .75, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            end
+
+            local icon = vgui.Create('ModelImage', i)
+            icon:SetModel(ecv.model)
+            icon:SetPos(5, 5)
+            icon:SetSize(i:GetTall() - 10, i:GetTall() - 10)
+
+            icon.Paint = function(s, w, h)
+                draw.RoundedBox(round, 0, 0, w, h, Color(80, 80, 80))
+            end
+
+            i.DoClick = function()
+                LocalPlayer():EmitSound('buttons/button15.wav', 25)
+                ei:Remove()
                 ei = vgui.Create('EditablePanel', ci)
                 ei:SetSize(ci:GetWide(), ci:GetTall())
                 ei:SetPos(0, 0)
 
-                i.Paint = function(s, w, h)
-                    if s:IsHovered() then
-                        draw.RoundedBox(round, 0, 0, w, h, Color(90, 90, 90))
-                    else
-                        draw.RoundedBox(round, 0, 0, w, h, Color(80, 80, 80))
-                    end
-
-                    draw.SimpleText(emv.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                    draw.SimpleText(DarkRP.formatMoney(emv.price), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                    local color
-
-                    if emv.max == team.NumPlayers(emv.team) and emv.max ~= 0 then
-                        color = Color(255, 0, 0)
-                    else
-                        color = color_white
-                    end
-
-                    draw.SimpleText(emv.max, 'nF4Font', h, h * .7, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                ei.Paint = function(s, w, h)
+                    draw.SimpleText(ecv.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    draw.SimpleText('Цена: ' .. DarkRP.formatMoney(ecv.price), 'nF4FontHead', w * .1, h * .4, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                    draw.SimpleText('Энергия: ' .. ecv.energy .. '%', 'nF4FontHead', w * .1, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                 end
 
-                i.DoClick = function()
-                    LocalPlayer():EmitSound('buttons/button15.wav', 25)
-                    ei:Remove()
-                    ei = vgui.Create('EditablePanel', ci)
-                    ei:SetSize(ci:GetWide(), ci:GetTall())
-                    ei:SetPos(0, 0)
-                    ei.Paint = function(s, w, h)
-                        draw.SimpleText(emv.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                        draw.SimpleText('Цена: ' .. DarkRP.formatMoney(emv.price), 'nF4FontHead', w * .1, h * .1, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                    end
+                local bb = vgui.Create('nF4Button', ei)
+                bb:SetSize(ei:GetWide() * .8, ei:GetTall() * .05)
+                bb:SetPos(ei:GetWide() * .1, ei:GetTall() * .9)
+                bb:SetText('Купить')
 
-                    local m = vgui.Create('DModelPanel', ei)
-                    m:SetSize(ei:GetWide(), ei:GetWide())
-                    m:SetPos(0, -ei:GetTall() * .1)
-                    m:SetModel(emv.model)
+                bb.DoClick = function()
+                    RunConsoleCommand('darkrp', 'buyfood', ecv.name)
                 end
 
-                local icon = vgui.Create('ModelImage', i)
-                icon:SetModel(emv.model)
-                icon:SetPos(5, 5)
-                icon:SetSize(i:GetTall() - 10, i:GetTall() - 10)
+                local m = vgui.Create('DModelPanel', ei)
+                m:SetSize(ei:GetWide(), ei:GetWide())
+                m:SetPos(0, -ei:GetTall() * .1)
+                m:SetModel(ecv.model)
+            end
+        end
+    end
 
-                icon.Paint = function(s, w, h)
-                    draw.RoundedBox(round, 0, 0, w, h, Color(0, 0, 0, 200))
+    local function shipmentspanel()
+        pnlfrf(NUI.F4.Pages.shipments.icon, NUI.F4.Pages.shipments.name)
+        local sc = vgui.Create('DScrollPanel', pnlfr)
+        sc:SetPos(-5, 10 + h:GetTall())
+        sc:SetSize(pnlfr:GetWide() - ci:GetWide(), pnlfr:GetTall() - h:GetTall() - 15)
+        sc.VBar:SetWide(sc:GetWide() * .02)
+        ScrollPaint(shipmentsscroll, sc, 50)
+        local cat -- Мур
+
+        for eck, ecv in pairs(DarkRP.getCategories().shipments) do
+            local ei
+            local iic = 0
+
+            for emkc, emvc in pairs(ecv.members) do
+                if emvc.allowed ~= nil then
+                    for ak, av in pairs(emvc.allowed) do
+                        if LocalPlayer():Team() == av then
+                            iic = iic + 1
+                        end
+                    end
+                end
+            end
+
+            if iic > 0 then
+                cat = vgui.Create('DCollapsibleCategory', sc)
+                cat:SetExpanded(true)
+                cat:Dock(TOP)
+                cat:DockMargin(10, 2, 5, 2)
+                cat:SetLabel('')
+                cat:DockPadding(0, 0, 0, 5)
+                cat.Header:SetTall(pnlfr:GetTall() * .05)
+
+                cat.Paint = function(s, w, h)
+                    draw.RoundedBox(round, 0, 0, w, h, Color(50, 50, 50))
+                    draw.SimpleText(ecv.name, 'nF4FontHead', w * .03, 5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                end
+            end
+
+            for emk, emv in pairs(ecv.members) do
+                if emv.allowed ~= nil then
+                    for ak, av in pairs(emv.allowed) do
+                        if LocalPlayer():Team() == av then
+                            local i = cat:Add('DButton', ecv.name)
+                            i:SetTall(pnlfr:GetTall() * .1)
+                            i:SetText('')
+                            i:Dock(TOP)
+                            i:DockMargin(5, 5, 5, 0)
+                            ei = vgui.Create('EditablePanel', ci)
+                            ei:SetSize(ci:GetWide(), ci:GetTall())
+                            ei:SetPos(0, 0)
+
+                            i.Paint = function(s, w, h)
+                                if s:IsHovered() then
+                                    draw.RoundedBox(round, 0, 0, w, h, Color(90, 90, 90))
+                                else
+                                    draw.RoundedBox(round, 0, 0, w, h, Color(80, 80, 80))
+                                end
+
+                                draw.SimpleText(emv.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                draw.SimpleText(DarkRP.formatMoney(emv.price), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                draw.SimpleText('Максимум: ' .. emv.amount, 'nF4Font', h, h * .7, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                            end
+
+                            local icon = vgui.Create('ModelImage', i)
+                            icon:SetModel(emv.model)
+                            icon:SetPos(5, 5)
+                            icon:SetSize(i:GetTall() - 10, i:GetTall() - 10)
+
+                            icon.Paint = function(s, w, h)
+                                draw.RoundedBox(round, 0, 0, w, h, Color(0, 0, 0, 200))
+                            end
+
+                            i.DoClick = function()
+                                LocalPlayer():EmitSound('buttons/button15.wav', 25)
+                                ei:Remove()
+                                ei = vgui.Create('EditablePanel', ci)
+                                ei:SetSize(ci:GetWide(), ci:GetTall())
+                                ei:SetPos(0, 0)
+
+                                ei.Paint = function(s, w, h)
+                                    draw.SimpleText(emv.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                    draw.SimpleText('Цена: ' .. DarkRP.formatMoney(emv.price), 'nF4FontHead', w * .1, h * .4, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                    draw.SimpleText('Максимум: ' .. emv.amount, 'nF4FontHead', w * .1, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                end
+
+                                local bb = vgui.Create('nF4Button', ei)
+                                bb:SetSize(ei:GetWide() * .8, ei:GetTall() * .05)
+                                bb:SetPos(ei:GetWide() * .1, ei:GetTall() * .9)
+                                bb:SetText('Купить')
+
+                                bb.DoClick = function()
+                                    RunConsoleCommand('darkrp', 'buyshipment', emv.name)
+                                end
+
+                                local m = vgui.Create('DModelPanel', ei)
+                                m:SetSize(ei:GetWide(), ei:GetWide())
+                                m:SetPos(0, -ei:GetTall() * .1)
+                                m:SetModel(emv.model)
+                            end
+                        end
+                    end
                 end
             end
         end
@@ -510,10 +706,14 @@ local function nF4Menu()
         mb.DoClick = function()
             pnlfr:Remove()
 
-            if bv.name == 'Профессии' then
+            if bk == 'jobs' then
                 jobpanel()
-            elseif bv.name == 'Вещи' then
+            elseif bk == 'entities' then
                 entitiespanel()
+            elseif bk == 'food' then
+                foodpanel()
+            elseif bk == 'shipments' then
+                shipmentspanel()
             end
         end
     end
