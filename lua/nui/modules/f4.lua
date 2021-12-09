@@ -12,8 +12,8 @@ surface.CreateFont('nF4Font', {
     extended = true,
 })
 
-local closebuticon = Material('darkhub_ui/delete.png', 'smooth 1')
-local modelselecticon = Material('darkhub_ui/user.png', 'smooth 1')
+local closebuticon = Material('nui/delete.png', 'smooth 1')
+local modelselecticon = Material('nui/user.png', 'smooth 1')
 
 local function ScrollPaint(svar, p, c)
     local svar = p:GetVBar()
@@ -287,22 +287,13 @@ local function nF4Menu()
                                 surface.DrawTexturedRect(w * .01, h * .1, h * .8, h * .8)
                             end
 
-                            local mscb = vgui.Create('DButton', msh)
+                            local mscb = vgui.Create('nF4Button', msh)
                             mscb:SetSize(msh:GetTall() * .8, msh:GetTall() * .8)
                             mscb:SetPos(msh:GetWide() - mscb:GetWide() - msh:GetTall() * .1, msh:GetTall() * .1)
                             mscb:SetText('')
-
-                            mscb.Paint = function(s, w, h)
-                                if s:IsHovered() then
-                                    draw.RoundedBox(round, 0, 0, w, h, Color(80, 80, 80))
-                                else
-                                    draw.RoundedBox(round, 0, 0, w, h, Color(70, 70, 70))
-                                end
-
-                                surface.SetDrawColor(255, 0, 0)
-                                surface.SetMaterial(closebuticon)
-                                surface.DrawTexturedRect(w * .125, h * .125, h * .8, h * .8)
-                            end
+                            mscb.useicon = true
+                            mscb.icon = closebuticon
+                            mscb.centericon = true
 
                             mscb.DoClick = function()
                                 ms:Remove()
