@@ -1,8 +1,11 @@
-NUI = {}
-
 if CLIENT then
+    NUI = {}
     NUI.F4 = {}
     NUI.Scoreboard = {}
+end
+
+if SERVER then
+    resource.AddWorkshop('2677605873')
 end
 
 local nuifiles = {
@@ -16,20 +19,5 @@ for k, v in pairs(nuifiles) do
         AddCSLuaFile(v.rep)
     elseif CLIENT then
         include(v.rep)
-    end
-end
-if SERVER then
-    if NUI.Workshop then
-        resource.AddWorkshop('2677605873')
-    else
-        resource.AddFile('materials/nui/vote.png')
-        resource.AddFile('materials/nui/vk.png')
-        resource.AddFile('materials/nui/internet.png')
-        resource.AddFile('materials/nui/food.png')
-        resource.AddFile('materials/nui/discord.png')
-        resource.AddFile('materials/nui/cube.png')
-        resource.AddFile('materials/nui/bulb.png')
-        resource.AddFile('materials/nui/build.png')
-        resource.AddFile('materials/nui/bring.png')
     end
 end

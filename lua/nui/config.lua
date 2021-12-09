@@ -1,5 +1,3 @@
-NUI.Workshop = false
-
 --[[ ------ Scoreboard ------ ]]
 NUI.Scoreboard.groups = {
     ['superadmin'] = {
