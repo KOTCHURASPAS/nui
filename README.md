@@ -6,6 +6,8 @@ no4ka UI 8)
 
 Если же вы нашли ошибку или способ оптимизировать код или же хотите задать вопрос, то пишите мне в [ЛС Steam](https://steamcommunity.com/id/x_no4ka_x)
 
+## [Релизы](https://github.com/KOTCHURASPAS/nui/releases)
+
 ## [Контент](https://steamcommunity.com/sharedfiles/filedetails/?id=2677605873)
 
 
