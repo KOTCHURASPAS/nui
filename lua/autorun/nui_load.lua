@@ -1,5 +1,6 @@
+NUI = {}
+
 if CLIENT then
-    NUI = {}
     NUI.F4 = {}
     NUI.Scoreboard = {}
 end
@@ -17,17 +18,18 @@ for k, v in pairs(nuifiles) do
         include(v.rep)
     end
 end
-
-if NUI.Workshop then
-    resource.AddWorkshop('2677605873')
-else
-    resource.AddFile('materials/nui/vote.png')
-    resource.AddFile('materials/nui/vk.png')
-    resource.AddFile('materials/nui/internet.png')
-    resource.AddFile('materials/nui/food.png')
-    resource.AddFile('materials/nui/discord.png')
-    resource.AddFile('materials/nui/cube.png')
-    resource.AddFile('materials/nui/bulb.png')
-    resource.AddFile('materials/nui/build.png')
-    resource.AddFile('materials/nui/bring.png')
+if SERVER then
+    if NUI.Workshop then
+        resource.AddWorkshop('2677605873')
+    else
+        resource.AddFile('materials/nui/vote.png')
+        resource.AddFile('materials/nui/vk.png')
+        resource.AddFile('materials/nui/internet.png')
+        resource.AddFile('materials/nui/food.png')
+        resource.AddFile('materials/nui/discord.png')
+        resource.AddFile('materials/nui/cube.png')
+        resource.AddFile('materials/nui/bulb.png')
+        resource.AddFile('materials/nui/build.png')
+        resource.AddFile('materials/nui/bring.png')
+    end
 end

@@ -1,6 +1,6 @@
---[[ ------ Scoreboard ------ ]]
 NUI.Workshop = false
 
+--[[ ------ Scoreboard ------ ]]
 NUI.Scoreboard.groups = {
     ['superadmin'] = {
         name = 'Команда проекта',
