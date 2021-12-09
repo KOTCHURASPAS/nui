@@ -1,3 +1,7 @@
+MsgC(Color(183,0,255), '----------------\n')
+MsgC(Color(183,0,255), '--nUI by no4ka--\n')
+MsgC(Color(183,0,255), '----------------\n')
+
 if CLIENT then
     NUI = {}
     NUI.F4 = {}
