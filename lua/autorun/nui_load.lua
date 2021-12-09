@@ -20,7 +20,7 @@ for k, v in pairs(nuifiles) do
 end
 
 if NUI.Workshop then
-    resource.AddWorkshop('1111111')
+    resource.AddWorkshop('2677605873')
 else
     resource.AddFile('materials/nui/vote.png')
     resource.AddFile('materials/nui/vk.png')

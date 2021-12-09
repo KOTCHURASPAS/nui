@@ -12,8 +12,8 @@ surface.CreateFont('nF4Font', {
     extended = true,
 })
 
-local closebuticon = Material('darkhub_ui/delete.png', 'noclamp smooth')
-local modelselecticon = Material('darkhub_ui/user.png', 'noclamp smooth')
+local closebuticon = Material('nui/delete.png', 'noclamp smooth')
+local modelselecticon = Material('nui/user.png', 'noclamp smooth')
 
 local function ScrollPaint(svar, p, c)
     local svar = p:GetVBar()
