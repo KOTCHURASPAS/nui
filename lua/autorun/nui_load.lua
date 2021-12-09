@@ -5,10 +5,10 @@ if CLIENT then
 end
 
 local nuifiles = {
-    {rep = 'nui/f4.lua'},
-    {rep = 'nui/hud.lua'},
-    {rep = 'nui/scoreboard.lua'},
-    {rep = 'config.lua'},
+    {rep = 'nui/modules/f4.lua'},
+    {rep = 'nui/modules/hud.lua'},
+    {rep = 'nui/modules/scoreboard.lua'},
+    {rep = 'nui/config.lua'},
 }
 
 for k, v in pairs(nuifiles) do
