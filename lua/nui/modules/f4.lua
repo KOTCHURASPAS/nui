@@ -598,9 +598,9 @@ local function nF4Menu()
         sc.VBar:SetWide(sc:GetWide() * .02)
         ScrollPaint(shipmentsscroll, sc, 50)
         local cat -- Мур
+        local ei
 
         for eck, ecv in pairs(DarkRP.getCategories().shipments) do
-            local ei
             local iic = 0
 
             for emkc, emvc in pairs(ecv.members) do
@@ -650,7 +650,7 @@ local function nF4Menu()
 
                                 NUI.Functions.shadowtext(emv.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                                 NUI.Functions.shadowtext(DarkRP.formatMoney(emv.price), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                                NUI.Functions.shadowtext('Максимум: ' .. emv.amount, 'nF4Font', h, h * .7, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                NUI.Functions.shadowtext('Количество: ' .. emv.amount, 'nF4Font', h, h * .7, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                             end
 
                             local icon = vgui.Create('ModelImage', i)
@@ -672,7 +672,7 @@ local function nF4Menu()
                                 ei.Paint = function(s, w, h)
                                     NUI.Functions.shadowtext(emv.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                                     NUI.Functions.shadowtext('Цена: ' .. DarkRP.formatMoney(emv.price), 'nF4FontHead', w * .1, h * .4, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                                    NUI.Functions.shadowtext('Максимум: ' .. emv.amount, 'nF4FontHead', w * .1, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                    NUI.Functions.shadowtext('Количество: ' .. emv.amount, 'nF4FontHead', w * .1, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                                 end
 
                                 local bb = vgui.Create('nF4Button', ei)

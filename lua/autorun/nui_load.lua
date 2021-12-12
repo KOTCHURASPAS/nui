@@ -1,3 +1,14 @@
+if CLIENT then
+    NUI = {}
+    NUI.F4 = {}
+    NUI.Scoreboard = {}
+    NUI.Functions = {}
+end
+
+if SERVER then
+    resource.AddWorkshop('2677605873')
+end
+
 local nuifiles = {
     'nui/modules/f4.lua',
     'nui/modules/scoreboard.lua',
@@ -11,17 +22,6 @@ for k, v in pairs(nuifiles) do
     elseif CLIENT then
         include(v)
     end
-end
-
-if CLIENT then
-    NUI = {}
-    NUI.F4 = {}
-    NUI.Scoreboard = {}
-    NUI.Functions = {}
-end
-
-if SERVER then
-    resource.AddWorkshop('2677605873')
 end
 
 MsgC(Color(183,0,255), '----------------\n')
