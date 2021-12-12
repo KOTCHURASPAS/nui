@@ -16,7 +16,6 @@ NUI.Scoreboard.groups = {
 -- copystr = 'neme', 'steamid', 'steamid64', 'job'
 NUI.Scoreboard.adminprefix = 'sam'
 
-
 NUI.Scoreboard.cmdbuts = {
     {
         type = 'cmd',
@@ -38,7 +37,9 @@ NUI.Scoreboard.cmdbuts = {
     },
 }
 
-NUI.Scoreboard.orgs = true
+-- Включет отображение названия организации, если у вас стоит такой аддон
+NUI.Scoreboard.orgs = false
+
 --[[ ---------- F4 ---------- ]]
 -- Добавление ссылок в F4
 NUI.F4.Links = {

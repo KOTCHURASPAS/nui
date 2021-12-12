@@ -12,6 +12,8 @@ surface.CreateFont('nF4Font', {
     extended = true,
 })
 
+local round = 3
+
 local closebuticon = Material('nui/delete.png', 'smooth 1')
 local modelselecticon = Material('nui/user.png', 'smooth 1')
 
@@ -35,7 +37,6 @@ local function ScrollPaint(svar, p, c)
     end
 end
 
-local round = 3
 local fr, ci
 
 local function nF4Menu()
@@ -56,7 +57,7 @@ local function nF4Menu()
     h.Paint = function(s, w, h)
         draw.RoundedBoxEx(round, 0, 0, w, h, Color(50, 50, 50), true, true)
         draw.RoundedBox(0, 0, h - h * .08, w, h * .08, color_white)
-        draw.SimpleText(GetHostName(), 'nF4FontHead', w * .01, h * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        NUI.Functions.shadowtext(GetHostName(), 'nF4FontHead', w * .01, h * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
     local cls = vgui.Create('nF4Button', h)
@@ -106,7 +107,7 @@ local function nF4Menu()
             surface.SetDrawColor(color_white)
             surface.SetMaterial(i)
             surface.DrawTexturedRect(w * .03, h * .15, h * .7, h * .7)
-            draw.SimpleText(t, 'nF4FontHead', w * .1, h * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            NUI.Functions.shadowtext(t, 'nF4FontHead', w * .1, h * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
         end
     end
 
@@ -142,7 +143,7 @@ local function nF4Menu()
                         draw.RoundedBox(round, 0, 0, w, h, Color(50, 50, 50))
                     end
     
-                    draw.SimpleText(jv.name, 'nF4FontHead', w * .03, 5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    NUI.Functions.shadowtext(jv.name, 'nF4FontHead', w * .03, 5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                 end
             end
 
@@ -163,8 +164,8 @@ local function nF4Menu()
                         draw.RoundedBox(round, 0, 0, w, h, Color(80, 80, 80))
                     end
 
-                    draw.SimpleText(job.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                    draw.SimpleText(DarkRP.formatMoney(job.salary), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                    NUI.Functions.shadowtext(job.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                    NUI.Functions.shadowtext(DarkRP.formatMoney(job.salary), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     local text, color
 
                     if job.max == 0 then
@@ -179,7 +180,7 @@ local function nF4Menu()
                         color = color_white
                     end
 
-                    draw.SimpleText(text, 'nF4Font', h, h * .7, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                    NUI.Functions.shadowtext(text, 'nF4Font', h, h * .7, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                 end
 
                 local jwt
@@ -203,20 +204,20 @@ local function nF4Menu()
                     ji:SetPos(0, 0)
 
                     ji.Paint = function(s, w, h)
-                        draw.SimpleText(job.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                        draw.SimpleText('Зарплата: ' .. DarkRP.formatMoney(job.salary), 'nF4FontHead', w * .1, h * .1, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        NUI.Functions.shadowtext(job.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                        NUI.Functions.shadowtext('Зарплата: ' .. DarkRP.formatMoney(job.salary), 'nF4FontHead', w * .1, h * .1, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
                         if job.hasLicense then
-                            draw.SimpleText('Лицензия: есть', 'nF4FontHead', w * .1, h * .14, Color(0, 100, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                            NUI.Functions.shadowtext('Лицензия: есть', 'nF4FontHead', w * .1, h * .14, Color(0, 100, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                         else
-                            draw.SimpleText('Лицензия: нет', 'nF4FontHead', w * .1, h * .14, Color(0, 100, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                            NUI.Functions.shadowtext('Лицензия: нет', 'nF4FontHead', w * .1, h * .14, Color(0, 100, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                         end
 
                         if not table.IsEmpty(jwt) then
-                            draw.SimpleText('Оружия: ', 'nF4FontHead', w * .1, h * .18, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                            NUI.Functions.shadowtext('Оружия: ', 'nF4FontHead', w * .1, h * .18, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                         end
 
-                        draw.SimpleText('Описание:', 'nF4FontHead', w * .1, h * .45, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        NUI.Functions.shadowtext('Описание:', 'nF4FontHead', w * .1, h * .45, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     end
 
                     local m = vgui.Create('DModelPanel', ji)
@@ -289,7 +290,7 @@ local function nF4Menu()
                             msh.Paint = function(s, w, h)
                                 draw.RoundedBoxEx(round, 0, 0, w, h, Color(50, 50, 50), 1, 1)
                                 draw.RoundedBox(0, 0, h - h * .08, w, h * .08, color_white)
-                                draw.SimpleText('Выберите модель:', 'nF4FontHead', w * .07, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                NUI.Functions.shadowtext('Выберите модель:', 'nF4FontHead', w * .07, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                                 surface.SetDrawColor(255, 255, 255)
                                 surface.SetMaterial(modelselecticon)
                                 surface.DrawTexturedRect(w * .01, h * .1, h * .8, h * .8)
@@ -443,7 +444,7 @@ local function nF4Menu()
 
                 cat.Paint = function(s, w, h)
                     draw.RoundedBox(round, 0, 0, w, h, Color(50, 50, 50))
-                    draw.SimpleText(ecv.name, 'nF4FontHead', w * .03, 5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    NUI.Functions.shadowtext(ecv.name, 'nF4FontHead', w * .03, 5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                 end
             end
 
@@ -468,9 +469,9 @@ local function nF4Menu()
                                     draw.RoundedBox(round, 0, 0, w, h, Color(80, 80, 80))
                                 end
 
-                                draw.SimpleText(emv.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                                draw.SimpleText(DarkRP.formatMoney(emv.price), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                                draw.SimpleText('Максимум: ' .. emv.max, 'nF4Font', h, h * .7, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                NUI.Functions.shadowtext(emv.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                NUI.Functions.shadowtext(DarkRP.formatMoney(emv.price), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                NUI.Functions.shadowtext('Максимум: ' .. emv.max, 'nF4Font', h, h * .7, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                             end
 
                             local icon = vgui.Create('ModelImage', i)
@@ -490,9 +491,9 @@ local function nF4Menu()
                                 ei:SetPos(0, 0)
 
                                 ei.Paint = function(s, w, h)
-                                    draw.SimpleText(emv.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                                    draw.SimpleText('Цена: ' .. DarkRP.formatMoney(emv.price), 'nF4FontHead', w * .1, h * .4, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                                    draw.SimpleText('Максимум: ' .. emv.max, 'nF4FontHead', w * .1, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                    NUI.Functions.shadowtext(emv.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                    NUI.Functions.shadowtext('Цена: ' .. DarkRP.formatMoney(emv.price), 'nF4FontHead', w * .1, h * .4, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                    NUI.Functions.shadowtext('Максимум: ' .. emv.max, 'nF4FontHead', w * .1, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                                 end
 
                                 local bb = vgui.Create('nF4Button', ei)
@@ -542,9 +543,9 @@ local function nF4Menu()
                     draw.RoundedBox(round, 0, 0, w, h, Color(50, 50, 50))
                 end
 
-                draw.SimpleText(ecv.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                draw.SimpleText(DarkRP.formatMoney(ecv.price), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                draw.SimpleText('Энергия: ' .. ecv.energy .. '%', 'nF4Font', h, h * .75, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                NUI.Functions.shadowtext(ecv.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                NUI.Functions.shadowtext(DarkRP.formatMoney(ecv.price), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                NUI.Functions.shadowtext('Энергия: ' .. ecv.energy .. '%', 'nF4Font', h, h * .75, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
             end
 
             local icon = vgui.Create('ModelImage', i)
@@ -564,9 +565,9 @@ local function nF4Menu()
                 ei:SetPos(0, 0)
 
                 ei.Paint = function(s, w, h)
-                    draw.SimpleText(ecv.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                    draw.SimpleText('Цена: ' .. DarkRP.formatMoney(ecv.price), 'nF4FontHead', w * .1, h * .4, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                    draw.SimpleText('Энергия: ' .. ecv.energy .. '%', 'nF4FontHead', w * .1, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                    NUI.Functions.shadowtext(ecv.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    NUI.Functions.shadowtext('Цена: ' .. DarkRP.formatMoney(ecv.price), 'nF4FontHead', w * .1, h * .4, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                    NUI.Functions.shadowtext('Энергия: ' .. ecv.energy .. '%', 'nF4FontHead', w * .1, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                 end
 
                 local bb = vgui.Create('nF4Button', ei)
@@ -620,7 +621,7 @@ local function nF4Menu()
 
                 cat.Paint = function(s, w, h)
                     draw.RoundedBox(round, 0, 0, w, h, Color(50, 50, 50))
-                    draw.SimpleText(ecv.name, 'nF4FontHead', w * .03, 5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
+                    NUI.Functions.shadowtext(ecv.name, 'nF4FontHead', w * .03, 5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                 end
             end
 
@@ -644,9 +645,9 @@ local function nF4Menu()
                                     draw.RoundedBox(round, 0, 0, w, h, Color(80, 80, 80))
                                 end
 
-                                draw.SimpleText(emv.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                                draw.SimpleText(DarkRP.formatMoney(emv.price), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                                draw.SimpleText('Максимум: ' .. emv.amount, 'nF4Font', h, h * .7, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                NUI.Functions.shadowtext(emv.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                NUI.Functions.shadowtext(DarkRP.formatMoney(emv.price), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                NUI.Functions.shadowtext('Максимум: ' .. emv.amount, 'nF4Font', h, h * .7, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                             end
 
                             local icon = vgui.Create('ModelImage', i)
@@ -666,9 +667,9 @@ local function nF4Menu()
                                 ei:SetPos(0, 0)
 
                                 ei.Paint = function(s, w, h)
-                                    draw.SimpleText(emv.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                                    draw.SimpleText('Цена: ' .. DarkRP.formatMoney(emv.price), 'nF4FontHead', w * .1, h * .4, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-                                    draw.SimpleText('Максимум: ' .. emv.amount, 'nF4FontHead', w * .1, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                    NUI.Functions.shadowtext(emv.name, 'nF4FontHead', w * .5, h * .02, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                    NUI.Functions.shadowtext('Цена: ' .. DarkRP.formatMoney(emv.price), 'nF4FontHead', w * .1, h * .4, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                    NUI.Functions.shadowtext('Максимум: ' .. emv.amount, 'nF4FontHead', w * .1, h * .44, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                                 end
 
                                 local bb = vgui.Create('nF4Button', ei)

@@ -1,9 +1,3 @@
-local function ShadowedText(text, font, x, y, color, alignx, aligny)
-    draw.SimpleText(text, font, x - 1, y - 1, Color(0, 0, 0, 200), alignx, aligny)
-    draw.SimpleText(text, font, x + 1, y + 1, Color(0, 0, 0, 200), alignx, aligny)
-    draw.SimpleText(text, font, x, y, color, alignx, aligny)
-end
-
 surface.CreateFont('nScoreboardFont', {
     font = 'Comfortaa',
     size = ScreenScale(10),
@@ -83,9 +77,9 @@ local function ToggleScoreboard(toggle)
         headfr.Paint = function(self, w, h)
             draw.RoundedBoxEx(3, 0, 0, w, h * .5, Color(50, 50, 50), true, true)
             draw.RoundedBox(0, 0, h * .48, w, h * .035, color_white)
-            ShadowedText(GetHostName(), 'nScoreboardFontSmall', 10, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-            ShadowedText('Приятной игры!', 'nScoreboardFontSmall', w * .5, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            ShadowedText('Игроков: ' .. player.GetCount() .. '/' .. game.MaxPlayers(), 'nScoreboardFontSmall', w - 10, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+            NUI.Functions.shadowtext(GetHostName(), 'nScoreboardFontSmall', 10, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            NUI.Functions.shadowtext('Приятной игры!', 'nScoreboardFontSmall', w * .5, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            NUI.Functions.shadowtext('Игроков: ' .. player.GetCount() .. '/' .. game.MaxPlayers(), 'nScoreboardFontSmall', w - 10, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         end
 
         headtitles = vgui.Create('EditablePanel', playersfr)
@@ -94,10 +88,10 @@ local function ToggleScoreboard(toggle)
 
         headtitles.Paint = function(s, w, h)
             draw.RoundedBox(3, 0, 0, w, h, Color(50, 50, 50))
-            ShadowedText('Имя', 'nScoreboardFontSmall', 10, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-            ShadowedText('Профессия', 'nScoreboardFontSmall', w * .4, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            ShadowedText('Сыграно', 'nScoreboardFontSmall', w * .7, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-            ShadowedText('Привилегия', 'nScoreboardFontSmall', w - 10, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+            NUI.Functions.shadowtext('Имя', 'nScoreboardFontSmall', 10, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+            NUI.Functions.shadowtext('Профессия', 'nScoreboardFontSmall', w * .4, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            NUI.Functions.shadowtext('Сыграно', 'nScoreboardFontSmall', w * .7, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            NUI.Functions.shadowtext('Привилегия', 'nScoreboardFontSmall', w - 10, headtitles:GetTall() * .5, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
         end
 
         local scroller = vgui.Create('DScrollPanel', playersfr)
@@ -148,26 +142,26 @@ local function ToggleScoreboard(toggle)
                 
                 if NUI.Scoreboard.orgs then
                     if v:GetNWString('orgName') ~= '' then
-                        ShadowedText(v:Name() .. ' (' .. v:GetNWString('orgName') .. ')', 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        NUI.Functions.shadowtext(v:Name() .. ' (' .. v:GetNWString('orgName') .. ')', 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     else
-                        ShadowedText(v:Name(), 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                        NUI.Functions.shadowtext(v:Name(), 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     end
                 else
-                    ShadowedText(v:Name(), 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                    NUI.Functions.shadowtext(v:Name(), 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                 end
 
-                ShadowedText(v:getDarkRPVar('job'), 'nScoreboardFontSmall', w * .4, ytextpos, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                ShadowedText(PlayedTime(v:GetUTime() + CurTime() - v:GetUTimeStart()), 'nScoreboardFontSmall', w * .7, ytextpos, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                NUI.Functions.shadowtext(v:getDarkRPVar('job'), 'nScoreboardFontSmall', w * .4, ytextpos, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                NUI.Functions.shadowtext(PlayedTime(v:GetUTime() + CurTime() - v:GetUTimeStart()), 'nScoreboardFontSmall', w * .7, ytextpos, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                 if not (NUI.Scoreboard.groups[v:GetUserGroup()]) then
                     surface.SetDrawColor(color_white)
                     surface.SetMaterial(deficon)
                     surface.DrawTexturedRect(w * .97 - surface.GetTextSize('Неизвестно'), iconypos, icons, icons)
-                    ShadowedText('Неизвестно', 'nScoreboardFontSmall', w - 10, ytextpos, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                    NUI.Functions.shadowtext('Неизвестно', 'nScoreboardFontSmall', w - 10, ytextpos, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
                 else
                     surface.SetDrawColor(color_white)
                     surface.SetMaterial(NUI.Scoreboard.groups[v:GetUserGroup()].icon)
                     surface.DrawTexturedRect(w * .97 - surface.GetTextSize(NUI.Scoreboard.groups[v:GetUserGroup()].name), iconypos, icons, icons)
-                    ShadowedText(NUI.Scoreboard.groups[v:GetUserGroup()].name, 'nScoreboardFontSmall', w - 10, ytextpos, NUI.Scoreboard.groups[v:GetUserGroup()].color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                    NUI.Functions.shadowtext(NUI.Scoreboard.groups[v:GetUserGroup()].name, 'nScoreboardFontSmall', w - 10, ytextpos, NUI.Scoreboard.groups[v:GetUserGroup()].color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
                 end
             end
 
@@ -213,7 +207,7 @@ local function ToggleScoreboard(toggle)
                                 else
                                     draw.RoundedBox(h * .2, 0, 0, w, h, Color(50, 50, 50, 255))
                                 end
-                                ShadowedText(cv.name, 'nScoreboardFontButs', w * .5, h * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                NUI.Functions.shadowtext(cv.name, 'nScoreboardFontButs', w * .5, h * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                             end
 
                             cmdbut.DoClick = function()
