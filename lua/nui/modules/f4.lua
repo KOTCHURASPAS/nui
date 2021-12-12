@@ -165,6 +165,9 @@ local function nF4Menu()
                     end
 
                     NUI.Functions.shadowtext(job.name, 'nF4FontHead', h, h * .25, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                    if NUI.F4.SpecialJobs[job.team] then
+                        NUI.Functions.shadowtext(NUI.F4.SpecialJobs[job.team].text, 'nF4FontHead', h + surface.GetTextSize(job.name) + 5, h * .25, NUI.F4.SpecialJobs[job.team].color, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                    end
                     NUI.Functions.shadowtext(DarkRP.formatMoney(job.salary), 'nF4Font', h, h * .5, Color(24, 163, 0), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                     local text, color
 

@@ -75,6 +75,18 @@ NUI.F4.DisabledWeapons = {
     ['arrest_stick'] = true,
 }
 
+-- Префикс профессии
+NUI.F4.SpecialJobs = {
+    [TEAM_CITIZEN] = {
+        text = '[VIP]',
+        color = Color(226,173,0),
+    },
+    [TEAM_HOBO] = {
+        text = '[Лох]',
+        color = Color(255,0,0),
+    },
+}
+
 -- Основные кнопки F4
 NUI.F4.Pages = {
     ['food'] = {
