@@ -3,19 +3,42 @@ NUI.Scoreboard.groups = {
     ['superadmin'] = {
         name = 'Команда проекта',
         color = Color(255, 0, 0, 255),
-        icon = 'icon16/tux.png'
-    },
-    ['user'] = {
-        name = 'Игрок',
-        color = Color(255, 255, 255),
-        icon = 'icon16/user.png'
+        icon = Material('icon16/tux.png', 'noclamp 1')
     },
     ['admin'] = {
         name = 'Администратор',
         color = Color(53, 50, 255),
-        icon = 'icon16/user.png'
+        icon = Material('icon16/user.png', 'noclamp 1')
     },
 }
+
+-- type = 'copy', 'arg', 'cmd'
+-- copystr = 'neme', 'steamid', 'steamid64', 'job'
+NUI.Scoreboard.adminprefix = 'sam'
+
+
+NUI.Scoreboard.cmdbuts = {
+    {
+        type = 'cmd',
+        admin = true,
+        name = 'ТП к',
+        cmd = 'goto',
+    },
+    {
+        type = 'arg',
+        admin = true,
+        name = 'Кик',
+        cmd = 'kick',
+    }, 
+    {
+        type = 'copy',
+        admin = true,
+        name = 'SteamID',
+        str = 'steamid',
+    },
+}
+
+NUI.Scoreboard.orgs = true
 --[[ ---------- F4 ---------- ]]
 -- Добавление ссылок в F4
 NUI.F4.Links = {

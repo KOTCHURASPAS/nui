@@ -118,24 +118,32 @@ local function nF4Menu()
         jl.VBar:SetWide(jl:GetWide() * .02)
         ScrollPaint(jlscroll, jl, 50)
         local ji
+        local cat
 
         for jk, jv in pairs(DarkRP.getCategories().jobs) do
-            local cat = vgui.Create('DCollapsibleCategory', jl)
-            cat:SetExpanded(true)
-            cat:Dock(TOP)
-            cat:DockMargin(10, 2, 5, 2)
-            cat:SetLabel('')
-            cat:DockPadding(0, 0, 0, 5)
-            cat.Header:SetTall(pnlfr:GetTall() * .05)
-
-            cat.Paint = function(s, w, h)
-                if s:OnToggle() then
-                    draw.RoundedBoxEx(round, 0, 0, w, h, Color(50, 50, 50), true, true)
-                else
-                    draw.RoundedBox(round, 0, 0, w, h, Color(50, 50, 50))
+            local iic = 0
+            for tnk, jobv in pairs(jv.members) do
+                iic = iic + 1
+            end
+    
+            if iic > 0 then
+                cat = vgui.Create('DCollapsibleCategory', jl)
+                cat:SetExpanded(true)
+                cat:Dock(TOP)
+                cat:DockMargin(10, 2, 5, 2)
+                cat:SetLabel('')
+                cat:DockPadding(0, 0, 0, 5)
+                cat.Header:SetTall(pnlfr:GetTall() * .05)
+    
+                cat.Paint = function(s, w, h)
+                    if s:OnToggle() then
+                        draw.RoundedBoxEx(round, 0, 0, w, h, Color(50, 50, 50), true, true)
+                    else
+                        draw.RoundedBox(round, 0, 0, w, h, Color(50, 50, 50))
+                    end
+    
+                    draw.SimpleText(jv.name, 'nF4FontHead', w * .03, 5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
                 end
-
-                draw.SimpleText(jv.name, 'nF4FontHead', w * .03, 5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
             end
 
             for tn, job in pairs(jv.members) do
@@ -408,12 +416,12 @@ local function nF4Menu()
         sc:SetSize(pnlfr:GetWide() - ci:GetWide(), pnlfr:GetTall() - h:GetTall() - 15)
         sc.VBar:SetWide(sc:GetWide() * .02)
         ScrollPaint(entitiesscroll, sc, 50)
+        
         local cat -- Мур
+        local ei
 
         for eck, ecv in pairs(DarkRP.getCategories().entities) do
-            local ei
             local iic = 0
-
             for emkc, emvc in pairs(ecv.members) do
                 if emvc.allowed ~= nil then
                     for ak, av in pairs(emvc.allowed) do
@@ -442,6 +450,7 @@ local function nF4Menu()
             for emk, emv in pairs(ecv.members) do
                 if emv.allowed ~= nil then
                     for ak, av in pairs(emv.allowed) do
+                        PrintTable(emv.allowed)
                         if av == LocalPlayer():Team() then
                             local i = cat:Add('DButton')
                             i:SetTall(pnlfr:GetTall() * .1)

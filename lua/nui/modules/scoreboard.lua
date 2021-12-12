@@ -25,9 +25,7 @@ surface.CreateFont('nScoreboardFontButs', {
     extended = true,
 })
 
-
-
-function PlayedTime(time)
+local function PlayedTime(time)
     local t = {}
     local w = math.floor(time / (86400 * 7))
 
@@ -63,6 +61,8 @@ end
 local function st()
     LocalPlayer():EmitSound('buttons/button15.wav', 25)
 end
+
+local deficon = Material('icon16/user.png')
 
 local function ToggleScoreboard(toggle)
     if toggle then
@@ -132,15 +132,6 @@ local function ToggleScoreboard(toggle)
             playerbuts:SetText('')
             playerbuts:DockMargin(10,5,10,0)
             playerbuts:Dock(TOP)
-            local a = 200
-
-            playerbuts.OnCursorEntered = function()
-                a = 150
-            end
-
-            playerbuts.OnCursorExited = function()
-                a = 200
-            end
 
             local openstatus = false
             local ytextpos = playerbuts:GetTall() * .5
@@ -149,20 +140,35 @@ local function ToggleScoreboard(toggle)
 
             playerbuts.Paint = function(s, w, h)
                 draw.RoundedBox(3, 0, 0, w, h, team.GetColor(v:Team()))
-                draw.RoundedBox(3, 0, 0, w, h, Color(0, 0, 0, a))
-
-                if v:GetNWString('orgName') ~= '' then
-                    ShadowedText(v:Name() .. ' (' .. v:GetNWString('orgName') .. ')', 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                if s:IsHovered() then
+                    draw.RoundedBox(3, 0, 0, w, h, Color(0, 0, 0, 150))
+                else
+                    draw.RoundedBox(3, 0, 0, w, h, Color(0, 0, 0, 200))
+                end
+                
+                if NUI.Scoreboard.orgs then
+                    if v:GetNWString('orgName') ~= '' then
+                        ShadowedText(v:Name() .. ' (' .. v:GetNWString('orgName') .. ')', 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                    else
+                        ShadowedText(v:Name(), 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                    end
                 else
                     ShadowedText(v:Name(), 'nScoreboardFontSmall', 10 + avatar:GetWide(), ytextpos, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
                 end
 
                 ShadowedText(v:getDarkRPVar('job'), 'nScoreboardFontSmall', w * .4, ytextpos, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                 ShadowedText(PlayedTime(v:GetUTime() + CurTime() - v:GetUTimeStart()), 'nScoreboardFontSmall', w * .7, ytextpos, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-                surface.SetDrawColor(color_white)
-                surface.SetMaterial(Material(NUI.Scoreboard.groups[v:GetUserGroup()].icon))
-                surface.DrawTexturedRect(w * .97 - surface.GetTextSize(NUI.Scoreboard.groups[v:GetUserGroup()].name), iconypos, icons, icons)
-                ShadowedText(NUI.Scoreboard.groups[v:GetUserGroup()].name or 'Неизвестно', 'nScoreboardFontSmall', w - 10, ytextpos, NUI.Scoreboard.groups[v:GetUserGroup()].color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                if not (NUI.Scoreboard.groups[v:GetUserGroup()]) then
+                    surface.SetDrawColor(color_white)
+                    surface.SetMaterial(deficon)
+                    surface.DrawTexturedRect(w * .97 - surface.GetTextSize('Неизвестно'), iconypos, icons, icons)
+                    ShadowedText('Неизвестно', 'nScoreboardFontSmall', w - 10, ytextpos, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                else
+                    surface.SetDrawColor(color_white)
+                    surface.SetMaterial(NUI.Scoreboard.groups[v:GetUserGroup()].icon)
+                    surface.DrawTexturedRect(w * .97 - surface.GetTextSize(NUI.Scoreboard.groups[v:GetUserGroup()].name), iconypos, icons, icons)
+                    ShadowedText(NUI.Scoreboard.groups[v:GetUserGroup()].name, 'nScoreboardFontSmall', w - 10, ytextpos, NUI.Scoreboard.groups[v:GetUserGroup()].color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                end
             end
 
             avatar = vgui.Create('CircleAvatarImage', playerbuts)
@@ -187,90 +193,60 @@ local function ToggleScoreboard(toggle)
                         butsscroll = vgui.Create('DHorizontalScroller', playerbuts)
                         butsscroll:Dock(BOTTOM)
                         butsscroll:DockMargin(5, 0, 0, 5)
-                        -- butsscroll:SetPos(5, playersfr:GetTall() * .05)
-                        -- butsscroll:SetSize(playerbuts:GetWide(), 50)
                         butslist = vgui.Create('DIconLayout', butsscroll)
                         butslist:Dock(FILL)
                         butslist:SetSpaceY(5)
                         butslist:SetSpaceX(5)
 
-                        NUI.Scoreboard.cmd = {
-                            [1] = {
-                                typ = 'command',
-                                admin = true,
-                                name = 'ТП к',
-                                cmd = 'sam goto ' .. v:Name(),
-                            },
-                            [2] = {
-                                typ = 'command',
-                                admin = true,
-                                name = 'ТП к себе',
-                                cmd = 'sam bring ' .. v:Name(),
-                            },
-                            [3] = {
-                                typ = 'command',
-                                admin = true,
-                                name = 'Вернуть игрока',
-                                cmd = 'sam return ' .. v:Name(),
-                            },
-                            [4] = {
-                                typ = 'copy',
-                                admin = false,
-                                name = 'SteamID ' .. v:SteamID(),
-                                text = v:SteamID(),
-                            },
-                            [5] = {
-                                typ = 'copy',
-                                admin = false,
-                                name = 'Ник: ' .. v:Name(),
-                                text = v:Name(),
-                            },
-                            [6] = {
-                                typ = 'arg',
-                                admin = true,
-                                name = 'Кикнуть',
-                                cmd = 'sam kick ' .. v:Name() .. ' ',
-                            },
-                        }
-
-                        for c in pairs(NUI.Scoreboard.cmd) do
+                        for ck, cv in pairs(NUI.Scoreboard.cmdbuts) do
                             
                             surface.SetFont('nScoreboardFontButs')
                             cmdbut = vgui.Create('DButton', butslist)
-                            cmdbut:SetSize(10 + surface.GetTextSize(NUI.Scoreboard.cmd[c].name), butsscroll:GetTall())
+                            cmdbut:SetPos(0, 0)
+                            cmdbut:SetSize(10 + surface.GetTextSize(cv.name), butsscroll:GetTall() * .9)
                             cmdbut:SetText('')
                             butslist:Add(cmdbut)
-                            local texta = 255
-
-                            cmdbut.OnCursorEntered = function()
-                                texta = 200
-                            end
-
-                            cmdbut.OnCursorExited = function()
-                                texta = 255
-                            end
 
                             cmdbut.Paint = function(s, w, h)
-                                draw.RoundedBox(h * .2, 0, 0, w, h, Color(50, 50, 50, texta))
-                                ShadowedText(NUI.Scoreboard.cmd[c].name, 'nScoreboardFontButs', w * .5, h * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                                if s:IsHovered() then
+                                    draw.RoundedBox(h * .2, 0, 0, w, h, Color(50, 50, 50, 200))
+                                else
+                                    draw.RoundedBox(h * .2, 0, 0, w, h, Color(50, 50, 50, 255))
+                                end
+                                ShadowedText(cv.name, 'nScoreboardFontButs', w * .5, h * .5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
                             end
 
                             cmdbut.DoClick = function()
-                                if NUI.Scoreboard.cmd[c].typ == 'copy' then
-                                    SetClipboardText(NUI.Scoreboard.cmd[c].text)
-                                    notification.AddLegacy('Успешно скопрированно: ' .. NUI.Scoreboard.cmd[c].text, NOTIFY_HINT, 2)
-                                elseif NUI.Scoreboard.cmd[c].typ == 'command' then
-                                    ply:ConCommand(NUI.Scoreboard.cmd[c].cmd)
-                                elseif NUI.Scoreboard.cmd[c].typ == 'arg' then
+                                if cv.type == 'cmd' then
+                                    RunConsoleCommand(NUI.Scoreboard.adminprefix, cv.cmd, v:Name())
+                                elseif cv.type == 'arg' then
                                     Derma_StringRequest('Введите причину', 'Введите причину', '', function(arg)
                                         if arg ~= '' then
-                                            ply:ConCommand(NUI.Scoreboard.cmd[c].cmd .. arg)
+                                            RunConsoleCommand(NUI.Scoreboard.adminprefix, cv.cmd, v:Name(), arg)
                                         else
                                             notification.AddLegacy('Вы не указали причину', NOTIFY_ERROR, 2)
                                         end
                                     end, function(arg) return end)
+                                elseif cv.type == 'copy' then
+                                    local wc
+                                    if cv.str == 'name' then
+                                        SetClipboardText(v:Name())
+                                        wc = v:Name()
+                                    elseif cv.str == 'steamid' then
+                                        SetClipboardText(v:SteamID())
+                                        wc = v:SteamID()
+                                    elseif cv.str == 'steamid64' then
+                                        SetClipboardText(v:SteamID64())
+                                        wc = v:SteamID64()
+                                    elseif cv.str == 'job' then
+                                        SetClipboardText(v:getDarkRPVar('job'))
+                                        wc = v:getDarkRPVar('job')
+                                    elseif cv.str == 'group' then
+                                        SetClipboardText(v:GetUserGroup())
+                                        wc = v:GetUserGroup()
+                                    end
+                                    notification.AddLegacy('Успешно скопированно: ' .. wc, NOTIFY_ERROR, 2)
                                 end
-
                                 st()
                             end
                         end
