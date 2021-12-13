@@ -20,31 +20,16 @@ local modelselecticon = Material('nui/user.png', 'smooth 1')
 local function ScrollPaint(svar, p, c)
     local svar = p:GetVBar()
 
-    function svar:Paint()
-        return
-    end
-
-    function svar.btnUp:Paint(w, h)
-        draw.RoundedBox(10, 0, 0, w, h, Color(c, c, c))
-    end
-
-    function svar.btnDown:Paint(w, h)
-        draw.RoundedBox(10, 0, 0, w, h, Color(c, c, c))
-    end
+    function svar:Paint() return end
 
     function svar.btnGrip:Paint(w, h)
         draw.RoundedBox(10, 0, 0, w, h, Color(c, c, c))
     end
 end
 
-local jobs, entities, food, shipments
-
 local fr, ci
 
 local function nF4Menu()
-    PrintTable(NUI.F4)
-    print('asdasdasd')
-    
     fr = vgui.Create('EditablePanel')
     fr:SetSize(ScreenScale(400), ScreenScale(300))
     fr:MakePopup()
@@ -120,6 +105,7 @@ local function nF4Menu()
         jl:SetPos(-5, 10 + h:GetTall())
         jl:SetSize(pnlfr:GetWide() - ci:GetWide(), pnlfr:GetTall() - h:GetTall() - 15)
         jl.VBar:SetWide(jl:GetWide() * .02)
+        jl.VBar:SetHideButtons( true)
         ScrollPaint(jlscroll, jl, 50)
         local ji
         local cat
@@ -241,6 +227,7 @@ local function nF4Menu()
                         wl:SetPos(ji:GetWide() * .1, ji:GetTall() * .21)
                         wl:SetSize(ji:GetWide() * .4, ji:GetTall() * .2)
                         wl.VBar:SetWide(10)
+                        wl.VBar:SetHideButtons( true)
                         ScrollPaint(weaponlistscroll, wl, 50)
 
                         wl.Paint = function(s, w, h)
@@ -327,6 +314,7 @@ local function nF4Menu()
                             mss:SetPos(5, 5)
                             mss:SetSize(mdls:GetWide() - 10, mdls:GetTall() * .8)
                             mss:GetVBar():SetWide(10)
+                            mss.VBar:SetHideButtons( true)
                             local ml = vgui.Create('DIconLayout', mss)
                             ml:Dock(FILL)
                             ml:SetSpaceY(1)
@@ -423,6 +411,7 @@ local function nF4Menu()
         sc:SetPos(-5, 10 + h:GetTall())
         sc:SetSize(pnlfr:GetWide() - ci:GetWide(), pnlfr:GetTall() - h:GetTall() - 15)
         sc.VBar:SetWide(sc:GetWide() * .02)
+        sc.VBar:SetHideButtons( true)
         ScrollPaint(entitiesscroll, sc, 50)
         
         local cat -- Мур
@@ -530,6 +519,7 @@ local function nF4Menu()
         sc:SetPos(-5, 10 + h:GetTall())
         sc:SetSize(pnlfr:GetWide() - ci:GetWide(), pnlfr:GetTall() - h:GetTall() - 15)
         sc.VBar:SetWide(sc:GetWide() * .02)
+        sc.VBar:SetHideButtons( true)
         ScrollPaint(foodscroll, sc, 50)
         local ei
 
@@ -600,6 +590,7 @@ local function nF4Menu()
         sc:SetPos(-5, 10 + h:GetTall())
         sc:SetSize(pnlfr:GetWide() - ci:GetWide(), pnlfr:GetTall() - h:GetTall() - 15)
         sc.VBar:SetWide(sc:GetWide() * .02)
+        sc.VBar:SetHideButtons( true)
         ScrollPaint(shipmentsscroll, sc, 50)
         local cat -- Мур
         local ei
