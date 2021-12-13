@@ -37,9 +37,14 @@ local function ScrollPaint(svar, p, c)
     end
 end
 
+local jobs, entities, food, shipments
+
 local fr, ci
 
 local function nF4Menu()
+    PrintTable(NUI.F4)
+    print('asdasdasd')
+    
     fr = vgui.Create('EditablePanel')
     fr:SetSize(ScreenScale(400), ScreenScale(300))
     fr:MakePopup()
@@ -698,6 +703,7 @@ local function nF4Menu()
     jobpanel()
 
     for bk, bv in pairs(NUI.F4.Pages) do
+
         local mb = vgui.Create('nF4Button', bfr)
         mb:SetTall(bfr:GetTall() * .05)
         mb:Dock(TOP)

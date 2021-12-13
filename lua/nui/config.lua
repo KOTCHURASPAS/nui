@@ -75,6 +75,30 @@ NUI.F4.DisabledWeapons = {
     ['arrest_stick'] = true,
 }
 
+-- Основные кнопки F4
+NUI.F4.Pages = {
+    ['food'] = {
+        id = 'food',
+        name = 'Еда',
+        icon = Material('nui/food.png', 'noclamp 1')
+    },
+    ['shipments'] = {
+        id = 'shipments',
+        name = 'Коробки',
+        icon = Material('nui/cube.png', 'noclamp 1')
+    },
+    ['entities'] = {
+        id = 'entities',
+        name = 'Вещи',
+        icon = Material('nui/bulb.png', 'noclamp 1')
+    },
+    ['jobs'] = {
+        id = 'jobs',
+        name = 'Профессии',
+        icon = Material('nui/build.png', 'noclamp 1')
+    },
+}
+
 -- Префикс профессии
 NUI.F4.SpecialJobs = {
     [TEAM_CITIZEN] = {
@@ -84,25 +108,5 @@ NUI.F4.SpecialJobs = {
     [TEAM_HOBO] = {
         text = '[Лох]',
         color = Color(255,0,0),
-    },
-}
-
--- Основные кнопки F4
-NUI.F4.Pages = {
-    ['food'] = {
-        name = 'Еда',
-        icon = Material('nui/food.png', 'noclamp 1')
-    },
-    ['shipments'] = {
-        name = 'Коробки',
-        icon = Material('nui/cube.png', 'noclamp 1')
-    },
-    ['entities'] = {
-        name = 'Вещи',
-        icon = Material('nui/bulb.png', 'noclamp 1')
-    },
-    ['jobs'] = {
-        name = 'Профессии',
-        icon = Material('nui/build.png', 'noclamp 1')
     },
 }
