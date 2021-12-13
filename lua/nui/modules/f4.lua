@@ -63,8 +63,6 @@ local function nF4Menu()
     local cls = vgui.Create('nF4Button', h)
     cls:SetSize(h:GetTall() * 1 - 10, h:GetTall() - 10)
     cls:SetPos(h:GetWide() - cls:GetWide() - 3, 3)
-    cls:SetText('')
-    cls.useicon = true
     cls.icon = closebuticon
     cls.centericon = true
 
@@ -249,11 +247,14 @@ local function nF4Menu()
                             ws:Dock(TOP)
                             ws:DockMargin(5, 5, 5, 0)
                             ws:SetFont('nF4Font')
+                            ws:SetText('')
 
-                            if weapons.GetStored(wn) == nil then
-                                ws:SetText('• ' .. wn)
-                            else
-                                ws:SetText('• ' .. weapons.GetStored(wn).PrintName)
+                            ws.Paint = function(s,w,h)
+                                if weapons.GetStored(wn) then
+                                    NUI.Functions.shadowtext('• ' .. weapons.GetStored(wn).PrintName, 'nF4Font', 0, h * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                else
+                                    NUI.Functions.shadowtext('• ' .. wn, 'nF4Font', 0, h * .5, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                                end
                             end
                         end
                     end
@@ -261,9 +262,9 @@ local function nF4Menu()
                     local bb = vgui.Create('nF4Button', ji)
 
                     if job.vote then
-                        bb:SetText('Начать голосование')
+                        bb.text = 'Начать голосование'
                     else
-                        bb:SetText('Устроиться')
+                        bb.text = 'Устроиться'
                     end
 
                     bb:SetSize(ji:GetWide() * .8, ji:GetTall() * .05)
@@ -302,8 +303,6 @@ local function nF4Menu()
                             local mscb = vgui.Create('nF4Button', msh)
                             mscb:SetSize(msh:GetTall() * .8, msh:GetTall() * .8)
                             mscb:SetPos(msh:GetWide() - mscb:GetWide() - msh:GetTall() * .1, msh:GetTall() * .1)
-                            mscb:SetText('')
-                            mscb.useicon = true
                             mscb.icon = closebuticon
                             mscb.centericon = true
 
@@ -352,9 +351,9 @@ local function nF4Menu()
                             local mbb = vgui.Create('nF4Button', mdls)
 
                             if job.vote then
-                                mbb:SetText('Начать голосование')
+                                mbb.text = 'Начать голосование'
                             else
-                                mbb:SetText('Устроиться')
+                                mbb.text = 'Устроиться'
                             end
 
                             mbb:SetSize(mdls:GetWide() * .5, mdls:GetTall() * .07)
@@ -502,7 +501,7 @@ local function nF4Menu()
                                 local bb = vgui.Create('nF4Button', ei)
                                 bb:SetSize(ei:GetWide() * .8, ei:GetTall() * .05)
                                 bb:SetPos(ei:GetWide() * .1, ei:GetTall() * .9)
-                                bb:SetText('Купить')
+                                bb.text = 'Купить'
 
                                 bb.DoClick = function()
                                     RunConsoleCommand('darkrp', emv.cmd)
@@ -576,7 +575,7 @@ local function nF4Menu()
                 local bb = vgui.Create('nF4Button', ei)
                 bb:SetSize(ei:GetWide() * .8, ei:GetTall() * .05)
                 bb:SetPos(ei:GetWide() * .1, ei:GetTall() * .9)
-                bb:SetText('Купить')
+                bb.text = 'Купить'
 
                 bb.DoClick = function()
                     RunConsoleCommand('darkrp', 'buyfood', ecv.name)
@@ -678,7 +677,7 @@ local function nF4Menu()
                                 local bb = vgui.Create('nF4Button', ei)
                                 bb:SetSize(ei:GetWide() * .8, ei:GetTall() * .05)
                                 bb:SetPos(ei:GetWide() * .1, ei:GetTall() * .9)
-                                bb:SetText('Купить')
+                                bb.text = 'Купить'
 
                                 bb.DoClick = function()
                                     RunConsoleCommand('darkrp', 'buyshipment', emv.name)
@@ -700,12 +699,11 @@ local function nF4Menu()
 
     for bk, bv in pairs(NUI.F4.Pages) do
         local mb = vgui.Create('nF4Button', bfr)
-        mb:SetText(bv.name)
         mb:SetTall(bfr:GetTall() * .05)
         mb:Dock(TOP)
         mb:DockMargin(5, 5, 5, 2)
-        mb.useicon = true
         mb.icon = bv.icon
+        mb.text = bv.name
 
         mb.DoClick = function()
             pnlfr:Remove()
@@ -727,10 +725,8 @@ local function nF4Menu()
         lb:Dock(TOP)
         lb:DockMargin(5, 5, 5, 2)
         lb:SetTall(bfr:GetTall() * .05)
-        lb:SetPos(5, 5 + 1000)
-        lb.useicon = true
         lb.icon = lv.icon
-        lb:SetText(lv.name)
+        lb.text = lv.name
 
         lb.DoClick = function()
             gui.OpenURL(lv.link)

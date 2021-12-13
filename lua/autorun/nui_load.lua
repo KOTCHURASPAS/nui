@@ -3,25 +3,20 @@ if CLIENT then
     NUI.F4 = {}
     NUI.Scoreboard = {}
     NUI.Functions = {}
+    
+    include('nui/modules/f4.lua')
+    include('nui/modules/scoreboard.lua')
+    include('nui/modules/functions.lua')
+    include('nui/config.lua')
 end
 
 if SERVER then
     resource.AddWorkshop('2677605873')
-end
-
-local nuifiles = {
-    'nui/modules/f4.lua',
-    'nui/modules/scoreboard.lua',
-    'nui/modules/functions.lua',
-    'nui/config.lua',
-}
-
-for k, v in pairs(nuifiles) do
-    if SERVER then
-        AddCSLuaFile(v)
-    elseif CLIENT then
-        include(v)
-    end
+    
+    AddCSLuaFile('nui/modules/f4.lua')
+    AddCSLuaFile('nui/modules/scoreboard.lua')
+    AddCSLuaFile('nui/modules/functions.lua')
+    AddCSLuaFile('nui/config.lua')
 end
 
 MsgC(Color(183,0,255), '----------------\n')

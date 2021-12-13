@@ -13,6 +13,7 @@ function PANEL:Init()
     self:SetKeyboardInputEnabled(true)
     self:SetCursor('hand')
     self:SetFont('nF4MenuButton')
+    self:SetText('')
 end
 
 function PANEL:IsDown()
@@ -30,7 +31,11 @@ function PANEL:Paint(w, h)
         draw.RoundedBoxEx(3, 0, 0, w, h, Color(70, 70, 70), true, true)
     end
 
-    if self.useicon then
+    if self.text then
+        NUI.Functions.shadowtext(self.text, 'nF4MenuButton', w * .5, h * .45, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    end
+
+    if self.icon then
         surface.SetDrawColor(255,255,255)
         if self.centericon then
             surface.SetMaterial(self.icon)
